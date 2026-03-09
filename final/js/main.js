@@ -54,10 +54,17 @@
         }
     }
 
-    hamburger.addEventListener('click', toggleMenu);
-    hamburger.addEventListener('touchend', toggleMenu);
-  });
-
+    // Prevent ghost click after touch
+      var touchHandled = false;
+      hamburger.addEventListener('touchend', function (e) {
+              e.preventDefault();
+              touchHandled = true;
+              toggleMenu(e);
+      }, { passive: false });
+      hamburger.addEventListener('click', function (e) {
+              if (touchHandled) { touchHandled = false; return; }
+              toggleMenu(e);
+      });
   // Close menu when overlay is clicked
   overlay.addEventListener('click', closeMenu);
     overlay.addEventListener('touchend', function(e) { e.preventDefault(); closeMenu(); });
